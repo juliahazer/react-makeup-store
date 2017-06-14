@@ -1,39 +1,18 @@
 import React, { Component } from 'react';
 import {Route, Redirect, Link, withRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-import $ from 'jquery';
 import './App.css';
+import CurrentBrand from './CurrentBrand';
 import Cart from './Cart';
-import ProductCard from './ProductCard';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currBrand: null,
-      products: null,
       cart: []
     }
-    this.handleBrandClick = this.handleBrandClick.bind(this);
     this.addProductCart = this.addProductCart.bind(this);
     this.removeProductCart = this.removeProductCart.bind(this);
-  }
-
-  handleBrandClick(e){
-    this.props.history.push(`/brands/${e.target.id}`);
-    var url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + e.target.id;
-    var brandName = e.target.id;
-    $.getJSON(url).then((data) => {
-      // console.log(data)
-      data = data.map((el) => {
-        el.price = parseFloat(el.price).toFixed(2)
-        return el
-      })
-      this.setState({
-        products: data,
-        currBrand: brandName
-      });  
-    })
   }
 
   addProductCart(id, name, price){
@@ -67,6 +46,11 @@ class App extends Component {
   }
 
   render() {
+
+    const ShowCurrentBrand = (props) => (
+      <CurrentBrand {...props} addProductCart={this.addProductCart} />
+    );
+
     const ShoppingCart = () => (
       <Cart 
         productsArr={this.state.cart} 
@@ -76,35 +60,11 @@ class App extends Component {
 
     var brands = this.props.brands.map((el) => {
       return (
-        <button onClick={this.handleBrandClick}
-          key={el}
-          id={el}>
-          {el.toUpperCase()}
-        </button>
+        <div key={el} className='brandDiv'>
+          <Link to={"/brands/" + el}>{el.toUpperCase()}</Link>
+        </div>
       )
     });
-    var products;
-    if (this.state.products !== null){
-      products = this.state.products.map((el) => {
-        return (
-          <ProductCard 
-            key={el.id}
-            id={el.id}
-            name={el.name} 
-            price={el.price}
-            image={el.image_link}
-            category={el.category}
-            colorsArr={el.product_colors}
-            description={el.description}
-            addToCart={this.addProductCart}
-          />
-        )
-      });
-    }
-    var currBrand;
-    if (this.state.currBrand !== null){
-      currBrand = this.state.currBrand.toUpperCase();
-    }
 
     return (
       <div className="App">
@@ -118,11 +78,12 @@ class App extends Component {
         </div>
         <Redirect from="/" to="/brands"></Redirect>
         <Route path="/brands" render={() => {
-          return <div className="container-fluid">
-            {brands}
-            <h2>{currBrand}</h2>
-            {products}
-          </div>
+          return (
+            <div className="container-fluid">
+              <div className="brandsDiv">{brands}</div>
+              <Route path='/brands/:name' render={ShowCurrentBrand} />
+            </div>
+          )
         }}/> 
         <Route exact path="/cart" component={ShoppingCart} />
       </div>
@@ -134,9 +95,8 @@ App.defaultProps =  {
   brands: ["almay", "annabelle", "benefit", "covergirl",
            "dalish", "e.l.f.", "essie", "iman", "l'oreal",
            "marcelle", "maybelline", "milani", "misa",
-           "mistura", "moov", "nyx", "orly", "pacifica", "physicians",
-           "formula", "anada", "revlon", "salon",
-           "sante", "smashbox", "stila",
+           "mistura", "moov", "nyx", "orly", "pacifica",
+           "revlon", "sante", "smashbox", "stila",
            "suncoat", "zorah"]
 }
 

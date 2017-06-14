@@ -1,3 +1,16 @@
 .App {
   text-align: center;
 }
+
+.brandDiv {
+  display: inline-block;
+  margin: 10px;
+  background-color: pink;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.brandsDiv {
+  width: 70%;
+  margin: auto;
+}

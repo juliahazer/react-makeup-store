@@ -3,8 +3,10 @@
   width: 20%;
   display: inline-block;
   margin: 40px;
-  height: 550px;
-  overflow: hidden;
+  height: 600px;
+  overflow: auto;
+  border: 1px solid gray;
+  padding: 20px;
 }
 
 .colorBox {
