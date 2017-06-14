@@ -25,6 +25,10 @@ class App extends Component {
     var brandName = e.target.id;
     $.getJSON(url).then((data) => {
       // console.log(data)
+      data = data.map((el) => {
+        el.price = parseFloat(el.price).toFixed(2)
+        return el
+      })
       this.setState({
         products: data,
         currBrand: brandName
@@ -137,10 +141,10 @@ class App extends Component {
 App.defaultProps =  {
   brands: ["almay", "annabelle", "benefit", "covergirl",
            "dalish", "e.l.f.", "essie", "iman", "l'oreal",
-           "marcelle", "maybelline", "milani", "mineral fusion", "misa",
+           "marcelle", "maybelline", "milani", "misa",
            "mistura", "moov", "nyx", "orly", "pacifica", "physicians",
            "formula", "anada", "revlon", "salon",
-           "sante", "sinful", "smashbox", "stila",
+           "sante", "smashbox", "stila",
            "suncoat", "zorah"]
 }
 

@@ -3,7 +3,9 @@ import './Cart.css';
 
 class Cart extends Component {
   render() {
+    var total = 0;
     var products = this.props.productsArr.map((el) => {
+      total += Number(el.price) * Number(el.quantity);
       return (
         <tr className="text-left" key={el.id}>
           <td>{el.quantity}</td>
@@ -20,21 +22,27 @@ class Cart extends Component {
         </tr>
       )
     });
+    total = parseFloat(total).toFixed(2);
 
     var productTable = (
-      <table className="table table-striped"> 
-        <thead> 
-          <tr>  
-            <th>Quantity</th> 
-            <th>Name</th> 
-            <th>Price</th>
-            <th></th> 
-            </tr> 
-        </thead> 
-        <tbody> 
-          {products}
-        </tbody>
-      </table>
+      <div>
+        <table className="table table-striped"> 
+          <thead> 
+            <tr>  
+              <th>Quantity</th> 
+              <th>Name</th> 
+              <th>Price</th>
+              <th></th> 
+              </tr> 
+          </thead> 
+          <tbody> 
+            {products}
+          </tbody>
+        </table>
+        <div className="text-left">
+          <b>Total: ${total}</b>
+        </div>
+      </div>
     )
 
     if (products.length < 1){
