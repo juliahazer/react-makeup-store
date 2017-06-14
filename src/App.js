@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route, Redirect, Link} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import './App.css';
@@ -127,12 +128,29 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container-fluid">
-          <h1>Makeup Mega Market: 
-            <a href="" id="brands" onClick={this.changeView}>See Brands</a>
+          <h1>💅Makeup Mega Market: 
+            {/*<a href="" id="brands" onClick={this.changeView}>See Brands 💄</a>*/}
+            <Link to="/brands">See Brands</Link>
             | 
-            <a href="" id="cart" onClick={this.changeView}>See Cart</a></h1>
+            {/*<a href="" id="cart" onClick={this.changeView}>See Cart 🚎</a>*/}
+            <Link to="/cart">See Cart</Link></h1>
         </div>
-        {viewToDisplay}
+        {/*{viewToDisplay}*/}
+        <Route exact path="/brands" render={() =>
+          <div className="container-fluid">
+            {brands}
+            <h2>{this.state.currBrand}</h2>
+            <div className="row">
+              {products}
+            </div>
+          </div>
+        }/>
+        <Route exact path="/cart" render={() =>
+          <Cart 
+            productsArr={this.state.cart} 
+            removeProduct={this.removeProductCart}
+          />
+        }/>
       </div>
     );
   }
