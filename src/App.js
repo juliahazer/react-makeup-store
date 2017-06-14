@@ -77,7 +77,7 @@ class App extends Component {
           </h1>
         </div>
         <Redirect from="/react-makeup-store/" to="/react-makeup-store/brands"></Redirect>
-        <Route path="/brands" render={() => {
+        <Route path="/react-makeup-store/brands" render={() => {
           return (
             <div className="container-fluid">
               <div className="brandsDiv">{brands}</div>
@@ -85,7 +85,7 @@ class App extends Component {
             </div>
           )
         }}/> 
-        <Route exact path="/cart" component={ShoppingCart} />
+        <Route exact path="/react-makeup-store/cart" component={ShoppingCart} />
       </div>
     );
   }
