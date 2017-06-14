@@ -27,7 +27,7 @@ class ProductCard extends Component {
       categoryTxt = "Category: " + this.props.category;
     }
     return (
-      <div className="col-xs-4 text-left">
+      <div className="ProductCard text-left">
         <h3>{this.props.name}</h3>
         <button 
           onClick={this.add}>

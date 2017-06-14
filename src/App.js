@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Redirect, Link} from 'react-router-dom';
+import {Route, Redirect, Link, withRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import './App.css';
@@ -12,16 +12,15 @@ class App extends Component {
     this.state = {
       currBrand: null,
       products: null,
-      cart: [],
-      view: 'brands'
+      cart: []
     }
-    this.changeView = this.changeView.bind(this);
     this.handleBrandClick = this.handleBrandClick.bind(this);
     this.addProductCart = this.addProductCart.bind(this);
     this.removeProductCart = this.removeProductCart.bind(this);
   }
 
   handleBrandClick(e){
+    this.props.history.push(`/brands/${e.target.id}`);
     var url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + e.target.id;
     var brandName = e.target.id;
     $.getJSON(url).then((data) => {
@@ -67,17 +66,14 @@ class App extends Component {
     this.setState({cart});
   }
 
-  changeView(e){
-    e.preventDefault();
-    var currView = this.state.view;
-    if (e.target.id !== currView){
-      this.setState({
-        view: e.target.id
-      });
-    }
-  } 
-
   render() {
+    const ShoppingCart = () => (
+      <Cart 
+        productsArr={this.state.cart} 
+        removeProduct={this.removeProductCart}
+      />
+    );
+
     var brands = this.props.brands.map((el) => {
       return (
         <button onClick={this.handleBrandClick}
@@ -101,56 +97,34 @@ class App extends Component {
             colorsArr={el.product_colors}
             description={el.description}
             addToCart={this.addProductCart}
-          >
-          </ProductCard>
+          />
         )
       });
     }
-    var viewToDisplay;
-    if (this.state.view === 'brands'){
-      viewToDisplay = (
-        <div className="container-fluid">
-          {brands}
-          <h2>{this.state.currBrand}</h2>
-          <div className="row">
-            {products}
-          </div>
-        </div>
-      )
-    } else {
-      viewToDisplay = 
-        <Cart 
-          productsArr={this.state.cart} 
-          removeProduct={this.removeProductCart}
-        />
+    var currBrand;
+    if (this.state.currBrand !== null){
+      currBrand = this.state.currBrand.toUpperCase();
     }
 
     return (
       <div className="App">
         <div className="container-fluid">
-          <h1>💅Makeup Mega Market: 
-            {/*<a href="" id="brands" onClick={this.changeView}>See Brands 💄</a>*/}
-            <Link to="/brands">See Brands</Link>
-            | 
-            {/*<a href="" id="cart" onClick={this.changeView}>See Cart 🚎</a>*/}
-            <Link to="/cart">See Cart</Link></h1>
+          <h1>
+            <span role="img" aria-label="nails emoji">💅</span>
+            <Link to="/brands">Makeup Mega Market: Brands</Link>  
+              <span role="img" aria-label='lipstick emoji'>💄</span> 
+            <Link to="/cart">Cart</Link>  <span role="img" aria-label='cart emoji'>🚎</span>
+          </h1>
         </div>
-        {/*{viewToDisplay}*/}
-        <Route exact path="/brands" render={() =>
-          <div className="container-fluid">
+        <Redirect from="/" to="/brands"></Redirect>
+        <Route path="/brands" render={() => {
+          return <div className="container-fluid">
             {brands}
-            <h2>{this.state.currBrand}</h2>
-            <div className="row">
-              {products}
-            </div>
+            <h2>{currBrand}</h2>
+            {products}
           </div>
-        }/>
-        <Route exact path="/cart" render={() =>
-          <Cart 
-            productsArr={this.state.cart} 
-            removeProduct={this.removeProductCart}
-          />
-        }/>
+        }}/> 
+        <Route exact path="/cart" component={ShoppingCart} />
       </div>
     );
   }
@@ -166,4 +140,4 @@ App.defaultProps =  {
            "suncoat", "zorah"]
 }
 
-export default App;
+export default withRouter(App);
