@@ -12,11 +12,11 @@ class App extends Component {
       currBrand: null,
       products: null,
       cart: [],
-      showCart: false
+      view: 'brands'
     }
     this.handleBrandClick = this.handleBrandClick.bind(this);
     this.addProductCart = this.addProductCart.bind(this);
-    this.showCart = this.showCart.bind(this);
+    this.changeView = this.changeView.bind(this);
   }
 
   handleBrandClick(e){
@@ -49,8 +49,14 @@ class App extends Component {
     this.setState({cart});
   }
 
-  showCart(){
-    
+  changeView(e){
+    e.preventDefault();
+    var currView = this.state.view;
+    if (e.target.id !== currView){
+      this.setState({
+        view: e.target.id
+      });
+    }
   }
 
   // It contains the product name, price, image, category, colors available, and a description. 
@@ -84,20 +90,30 @@ class App extends Component {
         )
       });
     }
-    return (
-      <div className="App">
-        <div className="container-fluid">
-          <h1>Makeup Mega Market | <a href="" onClick={this.showCart}>See Cart</a></h1>
-        </div>
+    var viewToDisplay;
+    if (this.state.view === 'brands'){
+      viewToDisplay = (
         <div className="container-fluid">
           {brands}
-        </div>
-        <div className="container-fluid">
           <h2>{this.state.currBrand}</h2>
           <div className="row">
             {products}
           </div>
         </div>
+      )
+    } else {
+      <Cart productsArr={this.state.cart} />
+    }
+
+    return (
+      <div className="App">
+        <div className="container-fluid">
+          <h1>Makeup Mega Market: 
+            <a href="" id="brands" onClick={this.changeView}>See Brands</a>
+            | 
+            <a href="" id="cart" onClick={this.changeView}>See Cart</a></h1>
+        </div>
+        {viewToDisplay}
       </div>
     );
   }

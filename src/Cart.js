@@ -3,6 +3,18 @@ import './Cart.css';
 
 class Cart extends Component {
   render() {
+    var products = this.props.productsArr.map((el) => {
+      return (
+        <tr>
+          <td>{el.quantity}</td>
+          <td>{el.name}</td>
+          <td>{el.price}</td>
+          <td><button>Remove</button></td>
+        </tr>
+      )
+    });
+    console.log(products)
+
     return (
       <table className="table table-striped"> 
         <thead> 
@@ -14,12 +26,7 @@ class Cart extends Component {
             </tr> 
         </thead> 
         <tbody> 
-          <tr> 
-            <td>Mark</td> 
-            <td>Otto</td> 
-            <td>@mdo</td>
-            <td><button>Remove</button></td> 
-          </tr> 
+          {products}
         </tbody>
       </table>
     )
