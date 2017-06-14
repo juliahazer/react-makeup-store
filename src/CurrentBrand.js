@@ -14,7 +14,7 @@ class CurrentBrand extends Component {
   }
 
   callAPI(brandName){
-    var url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brandName;
+    var url = "https://makeup-api.herokuapp.com/api/v1/products.json?brand=" + brandName;
     $.getJSON(url).then((data) => {
       // console.log(data)
       data = data.map((el) => {
