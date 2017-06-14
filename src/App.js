@@ -61,7 +61,7 @@ class App extends Component {
     var brands = this.props.brands.map((el) => {
       return (
         <div key={el} className='brandDiv'>
-          <Link to={"/brands/" + el}>{el.toUpperCase()}</Link>
+          <Link to={"/react-makeup-store/brands/" + el}>{el.toUpperCase()}</Link>
         </div>
       )
     });
@@ -71,17 +71,17 @@ class App extends Component {
         <div className="container-fluid">
           <h1>
             <span role="img" aria-label="nails emoji">💅</span>
-            <Link to="/brands">Makeup Mega Market: Brands</Link>  
+            <Link to="/react-makeup-store/brands">Makeup Mega Market: Brands</Link>  
               <span role="img" aria-label='lipstick emoji'>💄</span> 
-            <Link to="/cart">Cart</Link>  <span role="img" aria-label='cart emoji'>🚎</span>
+            <Link to="/react-makeup-store/cart">Cart</Link>  <span role="img" aria-label='cart emoji'>🚎</span>
           </h1>
         </div>
-        <Redirect from="/" to="/brands"></Redirect>
+        <Redirect from="/react-makeup-store/" to="/react-makeup-store/brands"></Redirect>
         <Route path="/brands" render={() => {
           return (
             <div className="container-fluid">
               <div className="brandsDiv">{brands}</div>
-              <Route path='/brands/:name' render={ShowCurrentBrand} />
+              <Route path='/react-makeup-store/brands/:name' render={ShowCurrentBrand} />
             </div>
           )
         }}/> 
