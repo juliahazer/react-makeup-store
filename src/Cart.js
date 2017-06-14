@@ -5,17 +5,23 @@ class Cart extends Component {
   render() {
     var products = this.props.productsArr.map((el) => {
       return (
-        <tr>
+        <tr className="text-left" key={el.id}>
           <td>{el.quantity}</td>
           <td>{el.name}</td>
-          <td>{el.price}</td>
-          <td><button>Remove</button></td>
+          <td>${el.price}</td>
+          <td>
+            <button 
+              className="btn btn-danger" 
+              id={el.id}
+              onClick={this.props.removeProduct}>
+              Remove
+            </button>
+          </td>
         </tr>
       )
     });
-    console.log(products)
 
-    return (
+    var productTable = (
       <table className="table table-striped"> 
         <thead> 
           <tr>  
@@ -29,6 +35,16 @@ class Cart extends Component {
           {products}
         </tbody>
       </table>
+    )
+
+    if (products.length < 1){
+      productTable = <h1 className='noProducts'>You have no products in Your Cart!</h1>
+    }
+
+    return (
+      <div className="container-fluid">
+        {productTable}
+      </div>
     )
   }
 }

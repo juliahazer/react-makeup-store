@@ -14,16 +14,17 @@ class App extends Component {
       cart: [],
       view: 'brands'
     }
+    this.changeView = this.changeView.bind(this);
     this.handleBrandClick = this.handleBrandClick.bind(this);
     this.addProductCart = this.addProductCart.bind(this);
-    this.changeView = this.changeView.bind(this);
+    this.removeProductCart = this.removeProductCart.bind(this);
   }
 
   handleBrandClick(e){
     var url = "http://makeup-api.herokuapp.com/api/v1/products.json?brand=" + e.target.id;
     var brandName = e.target.id;
     $.getJSON(url).then((data) => {
-      console.log(data)
+      // console.log(data)
       this.setState({
         products: data,
         currBrand: brandName
@@ -49,6 +50,18 @@ class App extends Component {
     this.setState({cart});
   }
 
+  removeProductCart(e){
+    var removeId = Number(e.target.id);
+    var cart = this.state.cart.slice();
+    var indexItem = cart.findIndex((el) =>{
+      return el.id === removeId;
+    });
+    if (indexItem > -1){
+      cart.splice(indexItem, 1);
+    }
+    this.setState({cart});
+  }
+
   changeView(e){
     e.preventDefault();
     var currView = this.state.view;
@@ -57,9 +70,7 @@ class App extends Component {
         view: e.target.id
       });
     }
-  }
-
-  // It contains the product name, price, image, category, colors available, and a description. 
+  } 
 
   render() {
     var brands = this.props.brands.map((el) => {
@@ -102,7 +113,11 @@ class App extends Component {
         </div>
       )
     } else {
-      <Cart productsArr={this.state.cart} />
+      viewToDisplay = 
+        <Cart 
+          productsArr={this.state.cart} 
+          removeProduct={this.removeProductCart}
+        />
     }
 
     return (
