@@ -21,7 +21,7 @@ class App extends Component {
       return el.id === id;
     });
     if (indexItem > -1){
-      cart[indexItem].quantity++;
+      cart[indexItem] = {...cart[indexItem], quantity: cart[indexItem].quantity + 1};
     } else {
       cart.push({
         id: id,
@@ -93,7 +93,7 @@ class App extends Component {
 
 App.defaultProps =  {
   brands: ["almay", "annabelle", "benefit", "covergirl",
-           "dalish", "e.l.f.", "essie", "iman", "l'oreal",
+           "dalish", "e.l.f.", "essie", "l'oreal",
            "marcelle", "maybelline", "milani", "misa",
            "mistura", "moov", "nyx", "orly", "pacifica",
            "revlon", "sante", "smashbox", "stila",
